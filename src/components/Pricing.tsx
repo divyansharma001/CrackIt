@@ -10,6 +10,9 @@ export function Pricing() {
       <div className="fixed inset-0 z-50 overflow-y-auto">
       <div className="absolute inset-0 dark:bg-black/50 bg-blue-50  flex items-center justify-center p-4">
         <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-md w-full mx-auto p-6 md:p-8 text-center transform transition-all">
+        <span className="inline-block px-3 py-1 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-full mb-4">
+            Pricing
+          </span>
           <div className="mb-6">
             <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-800 dark:text-white">
               Placement Season Support
