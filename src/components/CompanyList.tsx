@@ -390,7 +390,7 @@ export function CompanyList() {
                   <div className={viewMode === 'grid' ? 'text-center' : 'flex-grow'}>
                     <h3 className="font-medium truncate">{company.name}</h3>
                     <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                      {Math.floor(Math.random() * 200) + 20} questions
+                      Click to View questions
                     </p>
                   </div>
                 </div>
