@@ -12,6 +12,7 @@ import {
   Filter, 
   Clock 
 } from 'lucide-react';
+import { Header } from './Header';
 
 const CompanyPage: React.FC = () => {
   const { companyName } = useParams<{ companyName: string }>();
@@ -117,6 +118,7 @@ const CompanyPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
+        <Header/>
       <div className="container mx-auto px-6 py-12 max-w-7xl">
         <motion.h1 
           initial={{ opacity: 0, y: -50 }}
