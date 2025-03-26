@@ -38,10 +38,10 @@ export function Header() {
           <div className="relative w-8 h-8">
             <div className="absolute inset-0 bg-blue-600 rounded-md rotate-45"></div>
             <div className="absolute inset-1 bg-white dark:bg-gray-900 rounded-sm flex items-center justify-center">
-              <span className="text-blue-600 font-bold">JR</span>
+              <span className="text-blue-600 font-bold">⚡︎</span>
             </div>
           </div>
-          <h1 className="text-xl font-bold"><Link to={'/'}>JobRush</Link></h1>
+          <h1 className="text-xl font-bold"><Link to={'/'}>CrackIt</Link></h1>
         </div>
       </div>
     </motion.header>

@@ -21,10 +21,10 @@ export function Footer() {
               >
                 <div className="absolute inset-0 bg-blue-600 rounded-md rotate-45"></div>
                 <div className="absolute inset-1 bg-white dark:bg-gray-900 rounded-sm flex items-center justify-center">
-                  <span className="text-blue-600 font-bold text-lg">JR</span>
+                  <span className="text-blue-600 font-bold text-lg">⚡︎</span>
                 </div>
               </motion.div>
-              <h1 className="text-2xl font-bold text-gray-800 dark:text-white">JobRush</h1>
+              <h1 className="text-2xl font-bold text-gray-800 dark:text-white">CrackIt</h1>
             </div>
 
             <div className="flex space-x-4">
@@ -39,7 +39,7 @@ export function Footer() {
                 </svg>
               </motion.a>
               <motion.a
-                href="https://github.com/divyansharma001/JobRush"
+                href="https://github.com/divyansharma001/CrackIt"
                 className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                 whileHover={{ scale: 1.2 }}
                 whileTap={{ scale: 0.9 }}
@@ -59,7 +59,7 @@ export function Footer() {
             transition={{ delay: 0.3, duration: 0.5 }}
             className="text-gray-600 dark:text-gray-400 text-sm"
           >
-            &copy; {currentYear} JobRush. All rights reserved.
+            &copy; {currentYear} CrackIt. All rights reserved.
           </motion.p>
           <motion.p
             initial={{ x: 50, opacity: 0 }}
