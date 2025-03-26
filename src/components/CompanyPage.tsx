@@ -12,7 +12,8 @@ import {
   Filter, 
   Clock, 
   Home,
-  Link
+  Link,
+  Link2
 } from 'lucide-react';
 import { Header } from './Header';
 
@@ -267,7 +268,7 @@ const CompanyPage: React.FC = () => {
                         whileHover={{ scale: 1.05 }}
                         className="text-blue-400 hover:text-blue-300 transition-colors flex items-center col-span-2 justify-center"
                       >
-                        <Check className="mr-1 w-4 h-4" /> Leetcode Link
+                        <Link className="mr-1 w-4 h-4" /> Leetcode Link
                       </motion.a>
                     </div>
                   </motion.div>
