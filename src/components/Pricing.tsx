@@ -1,60 +1,12 @@
+
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Check, Coffee } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Check } from "lucide-react";
 
 export function Pricing() {
   return (
-    <section id="pricing" className="py-20 relative">
-      <div className="absolute inset-0 z-10 bg-black/50 backdrop-blur-sm flex items-center justify-center">
-      <div className="fixed inset-0 z-50 overflow-y-auto">
-      <div className="absolute inset-0 dark:bg-black/50 bg-blue-50  flex items-center justify-center p-4">
-        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-md w-full mx-auto p-6 md:p-8 text-center transform transition-all">
-        <span className="inline-block px-3 py-1 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-full mb-4">
-            Pricing
-          </span>
-          <div className="mb-6">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-800 dark:text-white">
-              Placement Season Support
-            </h2>
-            <p className="text-gray-600 dark:text-gray-300 text-base md:text-lg">
-              Preparing for placements? We're here to help! This resource is{' '}
-              <span className="font-bold text-green-600 dark:text-green-400">
-                FREE
-              </span> for all students during placement/internship season.
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <a 
-                href="https://buymeacoffee.com/divyansharma001" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition w-full sm:w-auto"
-              >
-                <Coffee className="mr-2 size-5" />
-                Support the Creator
-              </a>
-              <a 
-                href="https://discord.gg/bFVFxyDu"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition w-full sm:w-auto"
-              >
-                Join Community
-              </a>
-            </div>
-            
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-4">
-              If this resource has helped you, consider supporting the creator's work
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-      </div>
-      <div className="container mx-auto px-4 opacity-30 pointer-events-none select-none">
+    <section id="pricing" className="py-20">
+      <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -69,13 +21,119 @@ export function Pricing() {
             Simple, transparent pricing
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Choose the plan that's right for your interview preparation needs.
+            It's <span className="font-semibold text-green-400">FREE</span> for this placement season. Enjoy the benefits of the Pro plan for free.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {/* Existing pricing card content */}
-          {/* The content remains the same as in the original component */}
+        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto blur-lg">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700"
+          >
+            <h3 className="text-xl font-bold mb-2">Basic</h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">Perfect for individuals just starting out</p>
+            
+            <div className="mb-6">
+              <span className="text-4xl font-bold">$9</span>
+              <span className="text-gray-600 dark:text-gray-400">/month</span>
+            </div>
+            
+            <Button className="w-full mb-6">Get started</Button>
+            
+            <ul className="space-y-3">
+              {[
+                "Access to top 50 most frequent questions",
+                "Basic frequency data",
+                "Solutions with explanations",
+                "Focus on FAANG companies",
+                "Email support"
+              ].map((feature) => (
+                <li key={feature} className="flex items-start">
+                  <Check className="text-green-500 mt-1 mr-2 h-4 w-4 flex-shrink-0" />
+                  <span className="text-sm text-gray-600 dark:text-gray-300">{feature}</span>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="bg-blue-600 text-white p-8 rounded-xl shadow-lg relative border border-blue-500 transform md:-translate-y-4 md:scale-105"
+          >
+            <div className="absolute top-0 right-0 transform translate-x-2 -translate-y-2">
+              <div className="bg-yellow-400 text-blue-900 text-xs font-bold px-3 py-1 rounded-full">
+                MOST POPULAR
+              </div>
+            </div>
+            
+            <h3 className="text-xl font-bold mb-2">Pro</h3>
+            <p className="text-blue-100 mb-6">For serious interview preparation</p>
+            
+            <div className="mb-6">
+              <span className="text-4xl font-bold">$19</span>
+              <span className="text-blue-100">/month</span>
+            </div>
+            
+            <Button className="w-full mb-6 bg-white hover:bg-gray-100 text-blue-600">Get started</Button>
+            
+            <ul className="space-y-3">
+              {[
+                "Access to all questions with frequency data",
+                "Company-specific preparation paths",
+                "Advanced pattern recognition",
+                "Detailed solutions with code",
+                "Performance tracking",
+                "Weekly mock interviews",
+                "Priority email support"
+              ].map((feature) => (
+                <li key={feature} className="flex items-start">
+                  <Check className="text-white mt-1 mr-2 h-4 w-4 flex-shrink-0" />
+                  <span className="text-sm">{feature}</span>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700"
+          >
+            <h3 className="text-xl font-bold mb-2">Enterprise</h3>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">For teams and organizations</p>
+            
+            <div className="mb-6">
+              <span className="text-4xl font-bold">$49</span>
+              <span className="text-gray-600 dark:text-gray-400">/month</span>
+            </div>
+            
+            <Button variant="outline" className="w-full mb-6">Contact sales</Button>
+            
+            <ul className="space-y-3">
+              {[
+                "Everything in Pro plan",
+                "Team management dashboard",
+                "Custom company focus",
+                "API access to frequency data",
+                "Advanced analytics",
+                "Dedicated account manager",
+                "24/7 priority support"
+              ].map((feature) => (
+                <li key={feature} className="flex items-start">
+                  <Check className="text-green-500 mt-1 mr-2 h-4 w-4 flex-shrink-0" />
+                  <span className="text-sm text-gray-600 dark:text-gray-300">{feature}</span>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
         </div>
 
         <motion.div
@@ -86,9 +144,9 @@ export function Pricing() {
           className="mt-16 text-center"
         >
           <p className="text-gray-600 dark:text-gray-300 mb-4">
-            Not sure which plan is right for you?
+            If you stil want to support me.
           </p>
-          <Button variant="outline">Contact us</Button>
+          <Button variant="outline"> <a href="https://buymeacoffee.com/divyansharma001">Buy me a coffee</a></Button>
         </motion.div>
       </div>
     </section>
