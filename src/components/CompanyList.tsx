@@ -1,9 +1,16 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, Grid, List, X } from "lucide-react";
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "@/components/ui/select";
 
 const companies = [
   { name: 'Accolite', slug: 'accolite' },
@@ -206,22 +213,63 @@ const companies = [
   { name: 'Zulily', slug: 'zulily' }
 ].sort((a, b) => a.name.localeCompare(b.name));
 
-// These will be our featured companies
 const featuredCompanies = [
-  'Google', 'Facebook', 'Amazon', 'Microsoft', 'Apple', 'Netflix', 'Uber', 'LinkedIn', 'Twitter'
+  'Google', 'Facebook', 'Amazon', 'Microsoft', 'Apple', 
+  'Netflix', 'Uber', 'LinkedIn', 'Twitter'
 ].map(name => ({ name, slug: name.toLowerCase().replace(/\s+/g, '-') }));
 
 export function CompanyList() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [viewAll, setViewAll] = useState(false);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [filterCategory, setFilterCategory] = useState('all');
+  const [companiesPerPage, setCompaniesPerPage] = useState(20);
 
-  const filteredCompanies = viewAll
-    ? companies.filter(company => 
-        company.name.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    : featuredCompanies.filter(company => 
+  // Company categories (you can expand this)
+  const companyCategories = [
+    'all', 
+    'tech', 
+    'finance', 
+    'social media', 
+    'e-commerce', 
+    'startup'
+  ];
+
+  // Categorize companies (example categorization)
+  const categorizedCompanies = {
+    'tech': ['Google', 'Microsoft', 'Apple', 'Amazon', 'Intel', 'Nvidia'],
+    'finance': ['Goldman Sachs', 'JP Morgan Chase', 'Citadel', 'Two Sigma'],
+    'social media': ['Facebook', 'Twitter', 'LinkedIn', 'Snapchat'],
+    'e-commerce': ['Amazon', 'Ebay', 'Alibaba', 'Wish'],
+    'startup': ['Uber', 'Airbnb', 'Stripe', 'Robinhood']
+  };
+
+  // Sophisticated filtering logic
+  const filteredCompanies = useMemo(() => {
+    let result = companies;
+
+    // Text search filter
+    if (searchTerm) {
+      result = result.filter(company => 
         company.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
+    }
+
+    // Category filter
+    if (filterCategory !== 'all') {
+      const categoryCompanies = categorizedCompanies[filterCategory] || [];
+      result = result.filter(company => 
+        categoryCompanies.includes(company.name)
+      );
+    }
+
+    return result.slice(0, companiesPerPage);
+  }, [searchTerm, filterCategory, companiesPerPage]);
+
+  // Clear search functionality
+  const clearSearch = () => {
+    setSearchTerm("");
+    setFilterCategory('all');
+  };
 
   return (
     <section 
@@ -229,92 +277,147 @@ export function CompanyList() {
       className="py-20 bg-gray-50 dark:bg-gray-900/30"
     >
       <div className="container mx-auto px-4">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <span className="inline-block px-3 py-1 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-full mb-4">
-            200+ Companies
-          </span>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Find questions from top tech companies
+            Explore Company Interview Questions
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Access a comprehensive database of interview questions from the world's leading technology companies.
+            Discover interview questions from top tech companies across various industries.
           </p>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="max-w-2xl mx-auto mb-8"
-        >
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            <Input
-              placeholder="Search companies..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 py-6 text-base"
-            />
-          </div>
-        </motion.div>
+        {/* Search and Filters */}
+        <div className="max-w-4xl mx-auto mb-8 space-y-4">
+          <div className="flex space-x-4">
+            <div className="relative flex-grow">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <Input
+                placeholder="Search companies..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10 py-6 text-base"
+              />
+              {searchTerm && (
+                <button 
+                  onClick={clearSearch}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  <X size={20} />
+                </button>
+              )}
+            </div>
 
+            <Select 
+              value={filterCategory}
+              onValueChange={(value) => setFilterCategory(value)}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select Category" />
+              </SelectTrigger>
+              <SelectContent>
+                {companyCategories.map(category => (
+                  <SelectItem key={category} value={category}>
+                    {category.charAt(0).toUpperCase() + category.slice(1)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <div className="flex items-center space-x-2">
+              <Button 
+                variant={viewMode === 'grid' ? 'default' : 'outline'}
+                size="icon"
+                onClick={() => setViewMode('grid')}
+              >
+                <Grid />
+              </Button>
+              <Button 
+                variant={viewMode === 'list' ? 'default' : 'outline'}
+                size="icon"
+                onClick={() => setViewMode('list')}
+              >
+                <List />
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* Company Display */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
+          className={`
+            ${viewMode === 'grid' 
+              ? 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4'
+              : 'space-y-3'
+            }
+          `}
         >
           {filteredCompanies.map((company, index) => (
             <Link
               to={`/company/${company.slug}`}
               key={company.slug}
-              className="block"
             >
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: 0.05 * (index % 10) }}
-                whileHover={{ scale: 1.03, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}
-                className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all border border-gray-200 dark:border-gray-700 cursor-pointer"
+                whileHover={{ scale: 1.05 }}
+                className={`
+                  ${viewMode === 'grid' 
+                    ? 'p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md border border-gray-200 dark:border-gray-700'
+                    : 'flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md border border-gray-200 dark:border-gray-700'
+                  }
+                  transition-all cursor-pointer
+                `}
               >
-                <div className="text-center">
-                  <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold mx-auto mb-2">
+                <div className={
+                  viewMode === 'grid' 
+                    ? 'text-center' 
+                    : 'flex items-center space-x-4 w-full'
+                }>
+                  <div className={`
+                    ${viewMode === 'grid' 
+                      ? 'w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold mx-auto mb-2'
+                      : 'w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold'}
+                  `}>
                     {company.name.charAt(0)}
                   </div>
-                  <h3 className="font-medium truncate">{company.name}</h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    {Math.floor(Math.random() * 200) + 20} questions
-                  </p>
+                  <div className={viewMode === 'grid' ? 'text-center' : 'flex-grow'}>
+                    <h3 className="font-medium truncate">{company.name}</h3>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      {Math.floor(Math.random() * 200) + 20} questions
+                    </p>
+                  </div>
                 </div>
               </motion.div>
             </Link>
           ))}
         </motion.div>
         
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="text-center mt-10"
-        >
-          <Button 
-            onClick={() => setViewAll(!viewAll)} 
-            variant="outline"
-            className="px-8"
-          >
-            {viewAll ? "Show less" : "View all companies"}
-          </Button>
-        </motion.div>
+        {/* Load More Button */}
+        {filteredCompanies.length === companiesPerPage && (
+          <div className="text-center mt-10">
+            <Button 
+              onClick={() => setCompaniesPerPage(prev => prev + 20)} 
+              variant="outline"
+              className="px-8"
+            >
+              Load More Companies
+            </Button>
+          </div>
+        )}
+
+        {/* No Results */}
+        {filteredCompanies.length === 0 && (
+          <div className="text-center py-10">
+            <p className="text-gray-500">No companies found. Try a different search or category.</p>
+          </div>
+        )}
       </div>
     </section>
   );
