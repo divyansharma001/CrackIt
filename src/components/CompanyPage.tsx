@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Papa from 'papaparse';
 import { motion } from 'framer-motion';
+import { useLocalStorage } from 'usehooks-ts';
 
 const CompanyPage: React.FC = () => {
   const { companyName } = useParams<{ companyName: string }>();
@@ -13,22 +14,11 @@ const CompanyPage: React.FC = () => {
     difficulty: 'All',
     minFrequency: 0,
   });
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [solvedQuestions, setSolvedQuestions] = useLocalStorage<string[]>('solved-questions', []);
+  
+  const itemsPerPage = 10;
   const timeFrames = ['6months', '1year', '2year', 'alltime'];
-
-  // Toggle theme
-  const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light');
-  };
-
-  useEffect(() => {
-    // Apply theme to document
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-  }, [theme]);
-
-  useEffect(() => {
-    loadCSV();
-  }, [companyName, timeFrame]);
 
   const loadCSV = async () => {
     try {
@@ -55,37 +45,58 @@ const CompanyPage: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    loadCSV();
+  }, [companyName, timeFrame]);
+
   const filteredData = data.filter(row => {
     const difficultyMatch = filters.difficulty === 'All' || row.Difficulty === filters.difficulty;
     const frequencyMatch = parseFloat(row.Frequency) >= filters.minFrequency;
     return difficultyMatch && frequencyMatch;
   });
 
-  return (
-    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'} transition-colors duration-300`}>
-      <div className="container mx-auto px-6 py-12">
-        {/* Theme Toggle */}
-        {/* <div className="absolute top-6 right-6">
-          <motion.button 
-            onClick={toggleTheme}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className={`p-2 rounded-full ${
-              theme === 'dark' 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-gray-200 text-gray-700'
-            }`}
-          >
-            {theme === 'dark' ? '☀️' : '🌙'}
-          </motion.button>
-        </div> */}
+  // Pagination logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
-        {/* Page Title */}
+  const toggleSolvedQuestion = (questionId: string) => {
+    setSolvedQuestions(prev => 
+      prev.includes(questionId) 
+        ? prev.filter(id => id !== questionId) 
+        : [...prev, questionId]
+    );
+  };
+
+  const renderPagination = () => {
+    const pageNumbers = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pageNumbers.push(
+        <button
+          key={i}
+          onClick={() => setCurrentPage(i)}
+          className={`px-4 py-2 mx-1 rounded-lg transition-all duration-300 ${
+            currentPage === i 
+              ? 'bg-blue-600 text-white' 
+              : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+          }`}
+        >
+          {i}
+        </button>
+      );
+    }
+    return pageNumbers;
+  };
+
+  return (
+    <div className="min-h-screen bg-black text-white">
+      <div className="container mx-auto px-6 py-12">
         <motion.h1 
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-4xl font-bold mb-8 capitalize"
+          className="text-4xl font-bold mb-8 capitalize text-center"
         >
           {companyName} Interview Questions
         </motion.h1>
@@ -95,7 +106,7 @@ const CompanyPage: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="flex space-x-2 mb-6"
+          className="flex justify-center space-x-2 mb-6"
         >
           {timeFrames.map(frame => (
             <motion.button 
@@ -106,7 +117,7 @@ const CompanyPage: React.FC = () => {
               className={`px-4 py-2 rounded-lg transition-all duration-300 ${
                 timeFrame === frame 
                   ? 'bg-blue-600 text-white' 
-                  : `${theme === 'dark' ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`
+                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
               }`}
             >
               {frame.replace('time', ' Time')}
@@ -119,16 +130,15 @@ const CompanyPage: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="flex space-x-4 mb-6"
+          className="flex justify-center space-x-4 mb-6"
         >
           <select 
             value={filters.difficulty} 
-            onChange={(e) => setFilters(prev => ({...prev, difficulty: e.target.value}))}
-            className={`p-2 border rounded-lg ${
-              theme === 'dark' 
-                ? 'bg-gray-700 border-gray-600 text-white' 
-                : 'bg-white border-gray-300 text-gray-900'
-            }`}
+            onChange={(e) => {
+              setFilters(prev => ({...prev, difficulty: e.target.value}));
+              setCurrentPage(1); // Reset to first page when filters change
+            }}
+            className="p-2 border rounded-lg bg-gray-700 border-gray-600 text-white"
           >
             <option value="All">All Difficulties</option>
             <option value="Easy">Easy</option>
@@ -140,12 +150,11 @@ const CompanyPage: React.FC = () => {
             type="number" 
             placeholder="Min Frequency" 
             value={filters.minFrequency}
-            onChange={(e) => setFilters(prev => ({...prev, minFrequency: parseFloat(e.target.value) || 0}))}
-            className={`p-2 border rounded-lg ${
-              theme === 'dark' 
-                ? 'bg-gray-700 border-gray-600 text-white' 
-                : 'bg-white border-gray-300 text-gray-900'
-            }`}
+            onChange={(e) => {
+              setFilters(prev => ({...prev, minFrequency: parseFloat(e.target.value) || 0}));
+              setCurrentPage(1); // Reset to first page when filters change
+            }}
+            className="p-2 border rounded-lg bg-gray-700 border-gray-600 text-white"
             step="0.01"
             min="0"
           />
@@ -161,37 +170,38 @@ const CompanyPage: React.FC = () => {
             <div className="animate-pulse text-xl">Loading...</div>
           </motion.div>
         ) : filteredData.length > 0 ? (
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className={`overflow-x-auto shadow-lg rounded-lg ${
-              theme === 'dark' ? 'bg-gray-800' : 'bg-white'
-            }`}>
+          <>
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="overflow-x-auto"
+            >
               <table className="w-full">
-                <thead className={`${
-                  theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'
-                }`}>
+                <thead className="bg-gray-800">
                   <tr>
-                    {['ID', 'Title', 'Acceptance', 'Difficulty', 'Frequency', 'Leetcode Link'].map((header) => (
+                    {['Solved', 'ID', 'Title', 'Acceptance', 'Difficulty', 'Frequency', 'Leetcode Link'].map((header) => (
                       <th key={header} className="p-3 text-left font-semibold">{header}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredData.map((row, index) => (
+                  {currentItems.map((row, index) => (
                     <motion.tr 
-                      key={index} 
+                      key={row.ID} 
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: index * 0.05 }}
-                      className={`border-t ${
-                        theme === 'dark' 
-                          ? 'hover:bg-gray-700 border-gray-700' 
-                          : 'hover:bg-gray-50 border-gray-200'
-                      }`}
+                      className="border-t border-gray-700 hover:bg-gray-800"
                     >
+                      <td className="p-3">
+                        <input 
+                          type="checkbox" 
+                          checked={solvedQuestions.includes(row.ID)}
+                          onChange={() => toggleSolvedQuestion(row.ID)}
+                          className="form-checkbox h-5 w-5 text-blue-600 bg-gray-700 border-gray-600 rounded"
+                        />
+                      </td>
                       <td className="p-3">{row.ID}</td>
                       <td className="p-3">{row.Title}</td>
                       <td className="p-3">{row.Acceptance}</td>
@@ -209,11 +219,7 @@ const CompanyPage: React.FC = () => {
                           target="_blank" 
                           rel="noopener noreferrer"
                           whileHover={{ scale: 1.05 }}
-                          className={`${
-                            theme === 'dark' 
-                              ? 'text-blue-400 hover:text-blue-300' 
-                              : 'text-blue-600 hover:text-blue-700'
-                          } transition-colors`}
+                          className="text-blue-400 hover:text-blue-300 transition-colors"
                         >
                           Link
                         </motion.a>
@@ -222,8 +228,33 @@ const CompanyPage: React.FC = () => {
                   ))}
                 </tbody>
               </table>
-            </div>
-          </motion.div>
+            </motion.div>
+
+            {/* Pagination Controls */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="flex justify-center mt-6 space-x-2"
+            >
+              <button 
+                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                disabled={currentPage === 1}
+                className="px-4 py-2 rounded-lg bg-gray-700 text-gray-300 disabled:opacity-50"
+              >
+                Previous
+              </button>
+              
+              {renderPagination()}
+              
+              <button 
+                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                disabled={currentPage === totalPages}
+                className="px-4 py-2 rounded-lg bg-gray-700 text-gray-300 disabled:opacity-50"
+              >
+                Next
+              </button>
+            </motion.div>
+          </>
         ) : (
           <motion.p 
             initial={{ opacity: 0 }}
