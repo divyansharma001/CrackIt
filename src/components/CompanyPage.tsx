@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Papa from 'papaparse';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocalStorage } from 'usehooks-ts';
@@ -10,7 +10,8 @@ import {
   ChevronLast, 
   Check, 
   Filter, 
-  Clock 
+  Clock, 
+  Home
 } from 'lucide-react';
 import { Header } from './Header';
 
@@ -25,7 +26,8 @@ const CompanyPage: React.FC = () => {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [solvedQuestions, setSolvedQuestions] = useLocalStorage<string[]>('solved-questions', []);
-  
+  const navigate = useNavigate(); 
+
   // Enhanced pagination settings
   const itemsPerPage = 10; // Reduced for better mobile view
   const timeFrames = ['6months', '1year', '2year', 'alltime'];
@@ -115,16 +117,30 @@ const CompanyPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
-      <Header/>
       <div className="container mx-auto px-4 sm:px-6 py-8 max-w-7xl">
-        <motion.h1 
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-6 md:mb-10 capitalize text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600"
-        >
-          {companyName} Interview Questions
-        </motion.h1>
+      <div className="flex justify-between items-center mb-6 md:mb-10">
+          <motion.button 
+            onClick={() => navigate('/')}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="bg-gray-700 hover:bg-gray-600 rounded-full p-2 transition-all duration-300 flex items-center justify-center"
+          >
+            <Home className="w-6 h-6 text-white" />
+          </motion.button>
+          
+          <motion.h1 
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-3xl sm:text-4xl md:text-5xl font-extrabold capitalize text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600"
+          >
+            {companyName} Interview Questions
+          </motion.h1>
+          
+          {/* Placeholder div to center the title */}
+          <div className="w-12"></div>
+        </div>
+     
 
         {/* Responsive Time Frame and Filters Container */}
         <motion.div 
