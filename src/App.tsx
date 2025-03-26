@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import CSVViewer from "./components/Questions";
 import CompanyPage from "./components/CompanyPage";
+import { Analytics } from "@vercel/analytics/react";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,7 @@ const App = () => (
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
+      <Analytics />
     </ThemeProvider>
   </QueryClientProvider>
 );
