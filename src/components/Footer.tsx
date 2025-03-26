@@ -13,10 +13,10 @@ export function Footer() {
               <div className="relative w-8 h-8">
                 <div className="absolute inset-0 bg-blue-600 rounded-md rotate-45"></div>
                 <div className="absolute inset-1 bg-white dark:bg-gray-900 rounded-sm flex items-center justify-center">
-                  <span className="text-blue-600 font-bold">D</span>
+                  <span className="text-blue-600 font-bold">JR</span>
                 </div>
               </div>
-              <h1 className="text-xl font-bold">DSAPrep</h1>
+              <h1 className="text-xl font-bold">JobRush</h1>
             </div>
             <p className="text-gray-600 dark:text-gray-300 mb-4">
               Helping engineers ace their technical interviews with data-driven preparation.
@@ -91,11 +91,11 @@ export function Footer() {
         
         <div className="border-t border-gray-200 dark:border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-600 dark:text-gray-400 text-sm">
-            &copy; {currentYear} DSAPrep. All rights reserved.
+            &copy; {currentYear} JobRush. All rights reserved.
           </p>
           <div className="mt-4 md:mt-0">
             <p className="text-gray-600 dark:text-gray-400 text-sm">
-              Designed with ❤️ for engineers
+              Made with ❤️ for engineers
             </p>
           </div>
         </div>
