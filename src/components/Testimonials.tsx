@@ -37,7 +37,7 @@ export function Testimonials() {
             Success Stories
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Coming soon.....
+            Collecting feedbacks...
           </p>
         </motion.div>
 
