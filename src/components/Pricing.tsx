@@ -7,29 +7,49 @@ export function Pricing() {
   return (
     <section id="pricing" className="py-20 relative">
       <div className="absolute inset-0 z-10 bg-black/50 backdrop-blur-sm flex items-center justify-center">
-        <div className="bg-white dark:bg-gray-800 p-8 rounded-xl max-w-xl text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-800 dark:text-white">
-            Placement Season Support
-          </h2>
-          <p className="text-gray-600 dark:text-gray-300 mb-6">
-            Preparing for placements? We're here to help! This resource is free for all students during placement season.
-          </p>
-          <div className="flex justify-center space-x-4">
-            <a 
-              href="https://buymeacoffee.com/divyansharma001" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition"
-            >
-              <Coffee className="mr-2" />
-              Support the Creator
-            </a>
-            <Button variant="outline"><a href="https://discord.gg/bFVFxyDu">Join Community</a></Button>
+      <div className="fixed inset-0 z-50 overflow-y-auto">
+      <div className="absolute inset-0 dark:bg-black/50 bg-blue-50  flex items-center justify-center p-4">
+        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-md w-full mx-auto p-6 md:p-8 text-center transform transition-all">
+          <div className="mb-6">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-800 dark:text-white">
+              Placement Season Support
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 text-base md:text-lg">
+              Preparing for placements? We're here to help! This resource is{' '}
+              <span className="font-bold text-green-600 dark:text-green-400">
+                FREE
+              </span> for all students during placement/internship season.
+            </p>
           </div>
-          <p className="text-sm text-gray-500 mt-4">
-            If this resource has helped you, consider supporting the creator's work
-          </p>
+
+          <div className="space-y-4">
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <a 
+                href="https://buymeacoffee.com/divyansharma001" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center bg-yellow-400 text-black px-4 py-2 rounded-lg hover:bg-yellow-500 transition w-full sm:w-auto"
+              >
+                <Coffee className="mr-2 size-5" />
+                Support the Creator
+              </a>
+              <a 
+                href="https://discord.gg/bFVFxyDu"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition w-full sm:w-auto"
+              >
+                Join Community
+              </a>
+            </div>
+            
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-4">
+              If this resource has helped you, consider supporting the creator's work
+            </p>
+          </div>
         </div>
+      </div>
+    </div>
       </div>
       <div className="container mx-auto px-4 opacity-30 pointer-events-none select-none">
         <motion.div
