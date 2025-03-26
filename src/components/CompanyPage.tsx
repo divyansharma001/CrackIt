@@ -27,7 +27,7 @@ const CompanyPage: React.FC = () => {
   const [solvedQuestions, setSolvedQuestions] = useLocalStorage<string[]>('solved-questions', []);
   
   // Enhanced pagination settings
-  const itemsPerPage = 15;
+  const itemsPerPage = 10; // Reduced for better mobile view
   const timeFrames = ['6months', '1year', '2year', 'alltime'];
 
   const loadCSV = async () => {
@@ -42,7 +42,7 @@ const CompanyPage: React.FC = () => {
         skipEmptyLines: true,
         complete: (result) => {
           setData(result.data);
-          setCurrentPage(1); // Reset to first page on new data load
+          setCurrentPage(1);
           setLoading(false);
         },
         error: (error) => {
@@ -68,7 +68,6 @@ const CompanyPage: React.FC = () => {
     });
   }, [data, filters]);
 
-  // Improved pagination logic
   const totalPages = useMemo(() => Math.ceil(filteredData.length / itemsPerPage), [filteredData]);
 
   const paginatedData = useMemo(() => {
@@ -84,14 +83,12 @@ const CompanyPage: React.FC = () => {
     );
   };
 
-  // Enhanced pagination rendering
   const renderPagination = () => {
     const pageNumbers = [];
-    const maxPagesToShow = 5;
+    const maxPagesToShow = 3; // Reduced for mobile
     let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
     let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
 
-    // Adjust start page if we're near the end
     if (endPage === totalPages) {
       startPage = Math.max(1, totalPages - maxPagesToShow + 1);
     }
@@ -103,7 +100,7 @@ const CompanyPage: React.FC = () => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setCurrentPage(i)}
-          className={`px-3 py-1 mx-1 rounded-md transition-all duration-300 ${
+          className={`px-2 py-1 mx-0.5 rounded-md text-sm transition-all duration-300 ${
             currentPage === i 
               ? 'bg-blue-600 text-white' 
               : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
@@ -118,33 +115,33 @@ const CompanyPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black text-white">
-        <Header/>
-      <div className="container mx-auto px-6 py-12 max-w-7xl">
+      <Header/>
+      <div className="container mx-auto px-4 sm:px-6 py-8 max-w-7xl">
         <motion.h1 
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-5xl font-extrabold mb-10 capitalize text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600"
+          className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-6 md:mb-10 capitalize text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600"
         >
           {companyName} Interview Questions
         </motion.h1>
 
-        {/* Time Frame and Filters Container */}
+        {/* Responsive Time Frame and Filters Container */}
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-6 mb-8"
+          className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6 mb-6 md:mb-8"
         >
           {/* Time Frame Selector */}
-          <div className="flex space-x-2">
+          <div className="flex flex-wrap justify-center space-x-2">
             {timeFrames.map(frame => (
               <motion.button 
                 key={frame}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setTimeFrame(frame)}
-                className={`px-4 py-2 rounded-lg transition-all duration-300 flex items-center ${
+                className={`px-3 py-2 text-sm rounded-lg transition-all duration-300 flex items-center mb-2 ${
                   timeFrame === frame 
                     ? 'bg-blue-600 text-white' 
                     : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
@@ -156,8 +153,8 @@ const CompanyPage: React.FC = () => {
             ))}
           </div>
 
-          {/* Filters */}
-          <div className="flex space-x-4">
+          {/* Responsive Filters */}
+          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
             <div className="relative">
               <select 
                 value={filters.difficulty} 
@@ -165,7 +162,7 @@ const CompanyPage: React.FC = () => {
                   setFilters(prev => ({...prev, difficulty: e.target.value}));
                   setCurrentPage(1);
                 }}
-                className="p-2 pl-8 border rounded-lg bg-gray-700 border-gray-600 text-white appearance-none"
+                className="p-2 pl-8 border rounded-lg bg-gray-700 border-gray-600 text-white appearance-none w-full sm:w-auto"
               >
                 <option value="All">All Difficulties</option>
                 <option value="Easy">Easy</option>
@@ -184,7 +181,7 @@ const CompanyPage: React.FC = () => {
                   setFilters(prev => ({...prev, minFrequency: parseFloat(e.target.value) || 0}));
                   setCurrentPage(1);
                 }}
-                className="p-2 pl-8 border rounded-lg bg-gray-700 border-gray-600 text-white w-32"
+                className="p-2 pl-8 border rounded-lg bg-gray-700 border-gray-600 text-white w-full sm:w-32"
                 step="0.01"
                 min="0"
               />
@@ -193,18 +190,18 @@ const CompanyPage: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Data Table */}
+        {/* Responsive Data Table */}
         {loading ? (
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="text-center py-12"
           >
-            <div className="animate-pulse text-2xl flex justify-center items-center space-x-4">
+            <div className="animate-pulse text-xl md:text-2xl flex justify-center items-center space-x-4">
               <span>Loading</span>
-              <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce"></div>
-              <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce delay-150"></div>
-              <div className="w-4 h-4 bg-blue-500 rounded-full animate-bounce delay-300"></div>
+              <div className="w-3 h-3 md:w-4 md:h-4 bg-blue-500 rounded-full animate-bounce"></div>
+              <div className="w-3 h-3 md:w-4 md:h-4 bg-blue-500 rounded-full animate-bounce delay-150"></div>
+              <div className="w-3 h-3 md:w-4 md:h-4 bg-blue-500 rounded-full animate-bounce delay-300"></div>
             </div>
           </motion.div>
         ) : filteredData.length > 0 ? (
@@ -215,11 +212,57 @@ const CompanyPage: React.FC = () => {
               transition={{ duration: 0.5 }}
               className="overflow-x-auto"
             >
-              <table className="w-full rounded-lg overflow-hidden shadow-lg">
+              {/* Mobile-friendly table view */}
+              <div className="block sm:hidden">
+                {paginatedData.map((row, index) => (
+                  <motion.div 
+                    key={row.ID} 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: index * 0.05 }}
+                    className="bg-gray-800 rounded-lg mb-4 p-4 shadow-md"
+                  >
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="font-bold text-lg">{row.Title}</span>
+                      <motion.input 
+                        type="checkbox" 
+                        checked={solvedQuestions.includes(row.ID)}
+                        onChange={() => toggleSolvedQuestion(row.ID)}
+                        whileTap={{ scale: 0.9 }}
+                        className="form-checkbox h-5 w-5 text-blue-600 bg-gray-700 border-gray-600 rounded"
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                      <div>ID: {row.ID}</div>
+                      <div>Acceptance: {row.Acceptance}</div>
+                      <div className={`font-bold ${
+                        row.Difficulty === 'Easy' ? 'text-green-500' : 
+                        row.Difficulty === 'Medium' ? 'text-yellow-500' : 
+                        'text-red-500'
+                      }`}>
+                        Difficulty: {row.Difficulty}
+                      </div>
+                      <div>Frequency: {parseFloat(row.Frequency).toFixed(4)}</div>
+                      <motion.a 
+                        href={row["Leetcode Question Link"]?.trim()} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        whileHover={{ scale: 1.05 }}
+                        className="text-blue-400 hover:text-blue-300 transition-colors flex items-center col-span-2 justify-center"
+                      >
+                        <Check className="mr-1 w-4 h-4" /> Leetcode Link
+                      </motion.a>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Desktop table view */}
+              <table className="w-full rounded-lg overflow-hidden shadow-lg hidden sm:table">
                 <thead className="bg-gray-800">
                   <tr>
                     {['Solved', 'ID', 'Title', 'Acceptance', 'Difficulty', 'Frequency', 'Leetcode Link'].map((header) => (
-                      <th key={header} className="p-3 text-left font-semibold">{header}</th>
+                      <th key={header} className="p-3 text-left font-semibold text-sm">{header}</th>
                     ))}
                   </tr>
                 </thead>
@@ -243,24 +286,24 @@ const CompanyPage: React.FC = () => {
                             className="form-checkbox h-5 w-5 text-blue-600 bg-gray-700 border-gray-600 rounded"
                           />
                         </td>
-                        <td className="p-3">{row.ID}</td>
-                        <td className="p-3">{row.Title}</td>
-                        <td className="p-3">{row.Acceptance}</td>
-                        <td className={`p-3 font-bold ${
+                        <td className="p-3 text-sm">{row.ID}</td>
+                        <td className="p-3 text-sm">{row.Title}</td>
+                        <td className="p-3 text-sm">{row.Acceptance}</td>
+                        <td className={`p-3 font-bold text-sm ${
                           row.Difficulty === 'Easy' ? 'text-green-500' : 
                           row.Difficulty === 'Medium' ? 'text-yellow-500' : 
                           'text-red-500'
                         }`}>
                           {row.Difficulty}
                         </td>
-                        <td className="p-3">{parseFloat(row.Frequency).toFixed(4)}</td>
+                        <td className="p-3 text-sm">{parseFloat(row.Frequency).toFixed(4)}</td>
                         <td className="p-3">
                           <motion.a 
                             href={row["Leetcode Question Link"]?.trim()} 
                             target="_blank" 
                             rel="noopener noreferrer"
                             whileHover={{ scale: 1.05 }}
-                            className="text-blue-400 hover:text-blue-300 transition-colors flex items-center"
+                            className="text-blue-400 hover:text-blue-300 transition-colors flex items-center text-sm"
                           >
                             <Check className="mr-1 w-4 h-4" /> Link
                           </motion.a>
@@ -272,11 +315,11 @@ const CompanyPage: React.FC = () => {
               </table>
             </motion.div>
 
-            {/* Enhanced Pagination Controls */}
+            {/* Responsive Pagination Controls */}
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="flex justify-center items-center mt-8 space-x-2"
+              className="flex justify-center items-center mt-6 md:mt-8 space-x-1 sm:space-x-2"
             >
               {/* First Page */}
               <motion.button 
@@ -284,9 +327,9 @@ const CompanyPage: React.FC = () => {
                 disabled={currentPage === 1}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="p-2 rounded-md bg-gray-700 text-gray-300 disabled:opacity-50"
+                className="p-1 sm:p-2 rounded-md bg-gray-700 text-gray-300 disabled:opacity-50"
               >
-                <ChevronFirst className="w-5 h-5" />
+                <ChevronFirst className="w-4 h-4 sm:w-5 sm:h-5" />
               </motion.button>
 
               {/* Previous Page */}
@@ -295,9 +338,9 @@ const CompanyPage: React.FC = () => {
                 disabled={currentPage === 1}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="p-2 rounded-md bg-gray-700 text-gray-300 disabled:opacity-50"
+                className="p-1 sm:p-2 rounded-md bg-gray-700 text-gray-300 disabled:opacity-50"
               >
-                <ChevronLeft className="w-5 h-5" />
+                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
               </motion.button>
 
               {/* Page Numbers */}
@@ -309,9 +352,9 @@ const CompanyPage: React.FC = () => {
                 disabled={currentPage === totalPages}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="p-2 rounded-md bg-gray-700 text-gray-300 disabled:opacity-50"
+                className="p-1 sm:p-2 rounded-md bg-gray-700 text-gray-300 disabled:opacity-50"
               >
-                <ChevronRight className="w-5 h-5" />
+                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </motion.button>
 
               {/* Last Page */}
@@ -320,9 +363,9 @@ const CompanyPage: React.FC = () => {
                 disabled={currentPage === totalPages}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="p-2 rounded-md bg-gray-700 text-gray-300 disabled:opacity-50"
+                className="p-1 sm:p-2 rounded-md bg-gray-700 text-gray-300 disabled:opacity-50"
               >
-                <ChevronLast className="w-5 h-5" />
+                <ChevronLast className="w-4 h-4 sm:w-5 sm:h-5" />
               </motion.button>
             </motion.div>
           </>
@@ -330,7 +373,7 @@ const CompanyPage: React.FC = () => {
           <motion.p 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-center text-gray-600 py-12 text-2xl"
+            className="text-center text-gray-600 py-12 text-xl sm:text-2xl"
           >
             No data available for the selected filters
           </motion.p>

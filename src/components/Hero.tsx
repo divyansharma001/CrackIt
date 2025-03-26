@@ -48,10 +48,11 @@ export function Hero() {
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
             >
               <Button size="lg" className="px-8 py-6 text-base">
-                Start practicing now
+                <a href="#companies">Start practicing now</a> 
               </Button>
               <Button size="lg" variant="outline" className="px-8 py-6 text-base">
-                View companies
+                <a href="#pricing">View pricing</a>
+                
               </Button>
             </motion.div>
           </div>
