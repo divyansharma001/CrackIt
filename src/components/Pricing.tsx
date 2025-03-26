@@ -25,7 +25,7 @@ export function Pricing() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto blur-lg">
+        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto blur-sm">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
