@@ -112,14 +112,14 @@ const features = [
     title: "Comprehensive Database",
     description: "Access thousands of real interview questions from hundreds of companies.",
     points: [
-      "Over 5,000 unique DSA questions",
-      "Covering 200+ top tech companies",
-      "Regularly updated with new questions"
+      "Over 900+ unique DSA questions",
+      "Covering 100+ top tech companies",
+      "Data for solved and unsolved problems"
     ]
   },
   {
     icon: BookOpen,
-    title: "Detailed Solutions",
+    title: "Detailed Solutions (Coming Soon)",
     description: "Learn the optimal approaches to solve each problem effectively.",
     points: [
       "Multiple solution approaches for each problem",
@@ -127,34 +127,5 @@ const features = [
       "Step-by-step explanations with code"
     ]
   },
-  {
-    icon: Clock,
-    title: "Time-Saving Preparation",
-    description: "Prepare more efficiently by focusing on what matters most.",
-    points: [
-      "Company-specific preparation paths",
-      "Prioritized question lists based on frequency",
-      "Mock interview preparation plans"
-    ]
-  },
-  {
-    icon: Zap,
-    title: "Performance Tracking",
-    description: "Monitor your progress and identify areas for improvement.",
-    points: [
-      "Track problems solved and time spent",
-      "Analyze your strengths and weaknesses",
-      "Receive personalized recommendations"
-    ]
-  },
-  {
-    icon: Database,
-    title: "Pattern Recognition",
-    description: "Identify common patterns across interview questions.",
-    points: [
-      "Group questions by solution patterns",
-      "Learn reusable strategies",
-      "Apply patterns to solve new problems"
-    ]
-  }
+  
 ];
