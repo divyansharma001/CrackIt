@@ -19,6 +19,7 @@ export default {
 			}
 		},
 		extend: {
+			
 			fontFamily: {
 				sans: ["Inter", "sans-serif"],
 				display: ["Plus Jakarta Sans", "sans-serif"],
@@ -115,7 +116,10 @@ export default {
 				'fade-in-right': 'fade-in-right 0.6s ease-out',
 				'fade-in-left': 'fade-in-left 0.6s ease-out',
 				'scale-in': 'scale-in 0.3s ease-out',
-				'slow-spin': 'slow-spin 20s linear infinite'
+				'slow-spin': 'slow-spin 20s linear infinite',
+				'slide-in': 'slideIn 0.5s ease-out',
+				'bounce': 'bounce 1s infinite',
+				'pulse': 'pulse 1.5s infinite',
 			}
 		}
 	},
