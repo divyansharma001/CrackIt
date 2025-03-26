@@ -144,7 +144,7 @@ export function Pricing() {
           className="mt-16 text-center"
         >
           <p className="text-gray-600 dark:text-gray-300 mb-4">
-            If you still want to support me.
+            If you still want to support me,
           </p>
           <Button variant="outline"> <a href="https://buymeacoffee.com/divyansharma001">Buy me a coffee</a></Button>
         </motion.div>
