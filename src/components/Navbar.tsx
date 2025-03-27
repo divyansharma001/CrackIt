@@ -52,11 +52,11 @@ export function Navbar() {
           <a href="#companies" className="text-sm font-medium hover:text-primary transition-colors">
             Companies
           </a>
-          <a href="#testimonials" className="text-sm font-medium hover:text-primary transition-colors">
-            Testimonials
-          </a>
           <a href="#pricing" className="text-sm font-medium hover:text-primary transition-colors">
-            Pricing
+          Pricing
+          </a>
+          <a href="https://github.com/divyansharma001/CrackIt" className="text-sm font-medium hover:text-primary transition-colors">
+            Star this project
           </a>
         </nav>
 
