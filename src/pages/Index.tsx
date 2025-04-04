@@ -7,6 +7,7 @@ import { Testimonials } from "@/components/Testimonials";
 import { Pricing } from "@/components/Pricing";
 import { Footer } from "@/components/Footer";
 import { ThemeProvider } from "@/providers/ThemeProvider";
+import ProblemSolver from "@/components/ProblemSolver";
 
 const Index = () => {
   return (
@@ -19,6 +20,7 @@ const Index = () => {
           <Features />
           {/* <Testimonials /> */}
           <Pricing />
+          <ProblemSolver />
         </main>
         <Footer />
       </div>

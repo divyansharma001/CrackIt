@@ -41,6 +41,7 @@
     "@radix-ui/react-tooltip": "^1.1.4",
     "@tanstack/react-query": "^5.56.2",
     "@vercel/analytics": "^1.5.0",
+    "caniuse-lite": "^1.0.30001710",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
